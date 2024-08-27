@@ -26,18 +26,20 @@ async function getUserdByID(id) {
     }
 }
 
-async function addUser(email, hashed_password,username) {
-    const sql = "INSERT into users (email, hashed_password,username) VALUES (?,?,?)";
+async function addUser(email, hash ,username) {
+    const sql = "INSERT into users (email, password,username) VALUES (?,?,?)";
     try {
-        const [result] = await connection.promise().query(sql,[email, hashed_password,username])
+        const [result] = await connection.promise().query(sql,[email, hash,username])
 
-        return result;
+        return result[0].insertId;
 
     } catch (error) {
-        console.log(error);
-        throw new Error ('Database Failure')
+        console.log( error);
+        return -1;
     }
 }
+
+
 
 
 module.exports = {
